@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/tether.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <title>Numeros Pseudoaleatorios</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2 class="text-center">Numeros Pseudoaleatorios</h2>
+                <div id="app">
+                  <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#metodo1" role="tab">Generador Congruencial Mixto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#metodo2" role="tab">Generador Congruencial Multiplicativo</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="metodo1" role="tabpanel">
+                            <div class="col-md-12 text-center">
+                                Xn+1 = ({{param_a}}Xn+{{param_b}}) mod {{param_c}}
+                            </div>
+                            <br/>
+                            <div class="col-md-12 text-center">
+                            <form class="form-inline">
+                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                    <div class="input-group-addon">a</div>
+                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_a" v-on:change="filtrar_a">
+                                </div>
+
+                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                    <div class="input-group-addon">b</div>
+                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_b" v-on:change="filtrar_b">  
+                                </div>
+
+                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                    <div class="input-group-addon">c</div>
+                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_c" v-on:change="filtrar_c">
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="col-md-12">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Oh snap!</strong> Change a few things up and try submitting again.
+                                </div>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr >
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Xn</th>
+                                            <th class="text-center">aXn</th>
+                                            <th class="text-center">aXn+c</th>
+                                            <th class="text-center">Xn+1</th>
+                                            <th class="text-center">un=Xn+1/m</th>                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="dato in datos">
+                                            <th class="text-center">{{dato.index+1}}</th>
+                                            <td>{{dato.xn}}</td>
+                                            <td>{{dato.axn}}</td>
+                                            <td>{{dato.axnc}}</td>
+                                            <td>{{dato.xn1}}</td>
+                                            <td>{{dato.un}}</td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="metodo2" role="tabpanel">perro</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/tether.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/vue.js"></script>
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                in_a:"",
+                in_b:"",
+                in_c:"",
+                in_x0:4,
+                param_a: 'a',
+                param_b: 'b',
+                param_c: 'c',
+                datos: []
+            },
+            methods:{
+               filtrar_a:function(){
+                console.log("hay evento");
+                if( Number(this.in_a) != NaN && this.in_a > 0){
+                    this.param_a = Number(this.in_a);
+                    this.crearTabla();
+                    
+                }else{
+                    this.in_a = "";
+                    this.param_a = 'a';
+                }
+               },
+               filtrar_b:function(){
+                console.log("hay evento");
+                if( Number(this.in_b) != NaN && this.in_b > 0){
+                    this.param_b = Number(this.in_b);
+                    this.crearTabla();
+                }else{
+                    this.in_b = "";
+                    this.param_b = 'b';
+                    
+                }
+               },
+               filtrar_c:function(){
+                console.log("hay evento");
+                if( Number(this.in_c) != NaN && this.in_c > 0){
+                    this.param_c = Number(this.in_c);
+                    this.crearTabla();
+                }else{
+                    this.in_c = "";
+                    this.param_c = 'c';
+                }
+               },
+               crearTabla : function(){
+                   this.datos = [];
+                   console.log("crear tabla");
+                   let x0 = this.in_x0;
+                   for(let i = 0; i < 10; i++){
+                        let row = {};
+                        row.index = i;
+                        row.xn = Number(x0);
+                        row.axn = Number(this.param_a) * row.xn;
+                        row.axnc = row.axn + Number(this.param_b);
+                        row.xn1 = row.axnc % Number(this.param_c);
+                        row.un = row.xn1 / this.param_c;
+                        console.log(i,row.xn, row.axn, row.axnc, row.xn1, row.un); 
+                        x0 = row.xn1;
+                       
+                        this.datos.push(row);
+                   }
+                    console.log(this.datos);
+               }
+            }
+        })
+    </script>
+</body>
+</html>
