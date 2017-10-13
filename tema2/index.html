@@ -27,35 +27,45 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="metodo1" role="tabpanel">
                             <div class="col-md-12 text-center">
-                                Xn+1 = ({{param_a}}Xn+{{param_b}}) mod {{param_c}}
+                                <h1>Xn+1 = ({{param_a}}Xn+{{param_b}}) mod {{param_c}}</h1>
                             </div>
                             <br/>
                             <div class="col-md-12 text-center">
                             <form class="form-inline">
-                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <!--<label class="sr-only" for="inlineFormInputGroup">Username</label>-->
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0 col-md-3">
                                     <div class="input-group-addon">a</div>
                                     <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_a" v-on:change="filtrar_a">
                                 </div>
 
-                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <!--<label class="sr-only" for="inlineFormInputGroup">Username</label>-->
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0 col-md-3">
                                     <div class="input-group-addon">b</div>
                                     <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_b" v-on:change="filtrar_b">  
                                 </div>
 
-                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
-                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <!--<label class="sr-only" for="inlineFormInputGroup">Username</label>-->
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0 col-md-3">
                                     <div class="input-group-addon">c</div>
                                     <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_c" v-on:change="filtrar_c">
                                 </div>
+
+                                <!--<label class="sr-only" for="inlineFormInputGroup">Username</label>-->
+                                <div class="input-group mb-2 mr-sm-2 mb-sm-0 col-md-2">
+                                    <div class="input-group-addon">x0</div>
+                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="" v-model="in_x0" v-on:change="filtrar_x0">
+                                </div>
+
+                            </form>
+                                 </div>
                                 <br/>
-                                <br/>
+                                
                                 <div class="col-md-12">
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Oh snap!</strong> Change a few things up and try submitting again.
                                 </div>
                                 </div>
+                                <div class="col-md-12 text-center">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr >
@@ -67,19 +77,18 @@
                                             <th class="text-center">un=Xn+1/m</th>                                            
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody v-if="verTabla">
                                         <tr v-for="dato in datos">
                                             <th class="text-center">{{dato.index+1}}</th>
                                             <td>{{dato.xn}}</td>
                                             <td>{{dato.axn}}</td>
                                             <td>{{dato.axnc}}</td>
                                             <td>{{dato.xn1}}</td>
-                                            <td>{{dato.un}}</td>
+                                            <td>{{dato.xn1}} / {{ param_c}}</td>
                                         </tr>
                                         
                                     </tbody>
                                 </table>
-                            </form>
                             </div>
                         </div>
                         <div class="tab-pane" id="metodo2" role="tabpanel">perro</div>
@@ -99,73 +108,6 @@
             $(this).tab('show')
         })
     </script>
-    <script>
-        new Vue({
-            el:'#app',
-            data:{
-                in_a:"",
-                in_b:"",
-                in_c:"",
-                in_x0:4,
-                param_a: 'a',
-                param_b: 'b',
-                param_c: 'c',
-                datos: []
-            },
-            methods:{
-               filtrar_a:function(){
-                console.log("hay evento");
-                if( Number(this.in_a) != NaN && this.in_a > 0){
-                    this.param_a = Number(this.in_a);
-                    this.crearTabla();
-                    
-                }else{
-                    this.in_a = "";
-                    this.param_a = 'a';
-                }
-               },
-               filtrar_b:function(){
-                console.log("hay evento");
-                if( Number(this.in_b) != NaN && this.in_b > 0){
-                    this.param_b = Number(this.in_b);
-                    this.crearTabla();
-                }else{
-                    this.in_b = "";
-                    this.param_b = 'b';
-                    
-                }
-               },
-               filtrar_c:function(){
-                console.log("hay evento");
-                if( Number(this.in_c) != NaN && this.in_c > 0){
-                    this.param_c = Number(this.in_c);
-                    this.crearTabla();
-                }else{
-                    this.in_c = "";
-                    this.param_c = 'c';
-                }
-               },
-               crearTabla : function(){
-                   this.datos = [];
-                   console.log("crear tabla");
-                   let x0 = this.in_x0;
-                   for(let i = 0; i < 10; i++){
-                        let row = {};
-                        row.index = i;
-                        row.xn = Number(x0);
-                        row.axn = Number(this.param_a) * row.xn;
-                        row.axnc = row.axn + Number(this.param_b);
-                        row.xn1 = row.axnc % Number(this.param_c);
-                        row.un = row.xn1 / this.param_c;
-                        console.log(i,row.xn, row.axn, row.axnc, row.xn1, row.un); 
-                        x0 = row.xn1;
-                       
-                        this.datos.push(row);
-                   }
-                    console.log(this.datos);
-               }
-            }
-        })
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
